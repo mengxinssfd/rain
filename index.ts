@@ -1,4 +1,16 @@
+type Point = [number, number];
+
 class Rain {
+  constructor(pos: Point, directAngle, canvas) {
+
+  }
+
+  update() {
+
+  }
+}
+
+class RainDrop {
   private readonly context: CanvasRenderingContext2D;
 
   constructor(private width: number, private height: number) {
@@ -15,6 +27,14 @@ class Rain {
     this.setBg();
   }
 
+  createRain() {
+
+  }
+
+  createRains() {
+
+  }
+
   setBg(color = "black") {
     const ctx = this.context;
     ctx.fillStyle = color;
@@ -28,4 +48,4 @@ class Rain {
 
 const screenWidth = window.innerWidth;
 const screenHeight = window.innerHeight;
-new Rain(screenWidth, screenHeight);
+new RainDrop(screenWidth, screenHeight);
