@@ -1,0 +1,44 @@
+//    "allowSyntheticDefaultImports": true, // "allowSyntheticDefaultImports": true +  "allowJs": true, 或 "moduleResolution": "node",才不会报错
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    // "outDir": "lib-es",
+    // "module": "commonjs",
+    // "target": "es5",
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "target": "esnext",
+    "sourceMap": false,
+    "allowJs": true,
+    // "jsx": "react",
+    "moduleResolution": "node",
+    "declaration": true,
+    //    "rootDir": "src",
+    "forceConsistentCasingInFileNames": false,
+    "noImplicitReturns": true,
+    "noImplicitThis": false,
+    "noImplicitAny": false,
+    "importHelpers": true,
+    "strictNullChecks": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "noUnusedLocals": true,
+    "experimentalDecorators": true,
+    "strict": true,
+    // "allowSyntheticDefaultImports": true,
+    "paths": {
+      "*": [
+        "src/*"
+      ]
+    }
+  },
+
+  "exclude": [
+    "tslib",
+    "lib*",
+    "test.ts",
+    "src/example/*",
+    "*.config.js"
+  ]
+}
