@@ -44,7 +44,7 @@ export default class Rain extends Node {
   }
 
   public reset() {
-    this.startPoint = this.initPoint;
+    this.onLoad();
   }
 
   public update() {
