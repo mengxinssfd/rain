@@ -9,18 +9,28 @@ export default class Rain extends Node {
   private startPoint!: Point;
   private speed!: number;
 
-  constructor(private readonly angle: number) {
+  constructor(private angle: number) {
     super();
   }
 
-  public onLoad() {
+  private init() {
     const width = randomNumber(10, 20);
     this.width = width;
+    // TODO 根据角度求底部长度
+    // const rangeStart = this.angle > 180 ?
+    // const rangeEnd = this.angle > 180 ?
     this.initPoint = [randomNumber(0, Scene.width), -width];
     this.startPoint = this.initPoint;
     this.speed = width;
-
     this.draw();
+  }
+
+  public onLoad() {
+    this.init();
+  }
+
+  public setAngle(angle: number) {
+    this.angle = angle;
   }
 
   public draw() {

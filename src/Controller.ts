@@ -1,6 +1,6 @@
 import Scene from "./Scene";
 import Rain from "./Rain";
-import {setInterval} from "timers";
+import {getAngle} from "./utils/coordinate";
 
 export default class Controller {
 
@@ -9,17 +9,29 @@ export default class Controller {
   }
 
   init() {
+    let angle = 180;
     const scene = new Scene();
     const rainList: Rain[] = [];
     const create = (): Rain => {
-      const r = new Rain(180);
+      const r = new Rain(angle);
       scene.addChild(r);
       r.draw();
       return r;
     };
+
+    const getLimitAngle = (ang: number) => {
+      return ang > 220 ? 220 : (ang < 150 ? 150 : ang);
+    };
+
     rainList.push(...[...Array(10)].map(() => {
       return create();
     }));
+
+    addEventListener("mousemove", ev => {
+      const {x, y} = ev;
+      angle = getLimitAngle(getAngle([Scene.width / 2, 0], [x, y]));
+      rainList.forEach(r => r.setAngle(angle));
+    });
 
     const int = setInterval(() => {
       if (rainList.length > 2000) {
