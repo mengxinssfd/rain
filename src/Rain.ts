@@ -1,4 +1,4 @@
-import {getRotatePoint, Point} from "./utils/coordinate";
+import {getBorderWidthBySin, getRotatePoint, Point} from "./utils/coordinate";
 import Node from "./super/Node";
 import Scene from "./Scene";
 import {randomNumber} from "./utils/utils";
@@ -14,14 +14,15 @@ export default class Rain extends Node {
   }
 
   private init() {
-    const width = randomNumber(10, 20);
+    const width = randomNumber(30, 50);
     this.width = width;
-    // TODO 根据角度求底部长度
-    // const rangeStart = this.angle > 180 ?
-    // const rangeEnd = this.angle > 180 ?
-    this.initPoint = [randomNumber(0, Scene.width), -width];
+    const rangeStart = this.angle < 180 ? getBorderWidthBySin(Scene.height, 180 - this.angle - 90, 180 - this.angle) : 0;
+    console.log(rangeStart);
+    const rangeEnd = this.angle > 180 ? getBorderWidthBySin(Scene.height, 360 - this.angle - 90, 360 - this.angle) : 0;
+    this.initPoint = [randomNumber(rangeStart, Scene.width + rangeEnd), -width];
     this.startPoint = this.initPoint;
-    this.speed = width;
+    this.speed = width / 2;
+    if (this.isOutScene) return;
     this.draw();
   }
 
@@ -48,9 +49,15 @@ export default class Rain extends Node {
     ctx.closePath();
   }
 
-  get isOutScene(): boolean {
+  get isOutScene() {
     const [x, y] = this.startPoint;
     return x < 0 || x > Scene.width || y > Scene.height;
+  }
+
+  get isOnBottom(): boolean {
+    const [, y] = this.startPoint;
+    // return x < 0 || x > Scene.width || y > Scene.height;
+    return y > Scene.height;
   }
 
   public reset() {
@@ -58,7 +65,7 @@ export default class Rain extends Node {
   }
 
   public update() {
-    if (this.isOutScene) {
+    if (this.isOnBottom) {
       this.reset();
     }
     this.startPoint = getRotatePoint(this.startPoint, this.speed, this.angle);

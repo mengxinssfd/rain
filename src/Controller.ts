@@ -34,7 +34,7 @@ export default class Controller {
     });
 
     const int = setInterval(() => {
-      if (rainList.length > 2000) {
+      if (rainList.length > 200) {
         clearInterval(int);
         return;
       }
