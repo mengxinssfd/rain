@@ -265,10 +265,8 @@ function main() {
         });
 
         // 解开注释，可看见鼠标范围
-        /*
           ctx.beginPath();
           ctx.arc(mousePos[0], mousePos[1], mouseDis, 0, 2 * Math.PI);
           ctx.stroke();
-        */
     }
 }

@@ -7,14 +7,14 @@
     // "target": "es5",
     "lib": [
       "esnext",
-      "dom"
+      "dom",
     ],
     "target": "esnext",
     "sourceMap": false,
     "allowJs": true,
     // "jsx": "react",
     "moduleResolution": "node",
-    "declaration": true,
+    "declaration": false,
     //    "rootDir": "src",
     "forceConsistentCasingInFileNames": false,
     "noImplicitReturns": true,
@@ -24,7 +24,7 @@
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,
-    "experimentalDecorators": true,
+    "experimentalDecorators": false,
     "strict": true,
     // "allowSyntheticDefaultImports": true,
     "paths": {
@@ -33,12 +33,14 @@
       ]
     }
   },
-
+  "include": [
+    "node_modules/@mxssfd/ts-utils/lib-es"
+  ],
   "exclude": [
     "tslib",
     "lib*",
     "test.ts",
     "src/example/*",
-    "*.config.js"
+    "*.config.js",
   ]
 }

@@ -1,27 +1,28 @@
-import {getBorderWidthBySin, getRotatePoint, Point} from "./utils/coordinate";
 import Node from "./super/Node";
 import Scene from "./Scene";
-import {randomNumber} from "./utils/utils";
+import {randomNumber, getBorderWidthBySin, getRotatePoint, Point} from "@mxssfd/ts-utils";
 
+const randomInt = (start: number, end: number) => ~~randomNumber(start, end);
 export default class Rain extends Node {
   private width!: number;
   private initPoint!: Point;
   private startPoint!: Point;
   private speed!: number;
+  private color!: string;
 
   constructor(private angle: number) {
     super();
   }
 
   private init() {
-    const width = randomNumber(30, 50);
+    const width = randomInt(20, 40);
     this.width = width;
     const rangeStart = this.angle < 180 ? getBorderWidthBySin(Scene.height, 180 - this.angle - 90, 180 - this.angle) : 0;
-    console.log(rangeStart);
     const rangeEnd = this.angle > 180 ? getBorderWidthBySin(Scene.height, 360 - this.angle - 90, 360 - this.angle) : 0;
-    this.initPoint = [randomNumber(rangeStart, Scene.width + rangeEnd), -width];
+    this.initPoint = [randomInt(rangeStart, Scene.width + rangeEnd), -width];
     this.startPoint = this.initPoint;
     this.speed = width / 2;
+    this.color = `rgba(255,255,255,${randomNumber(0.2, 0.7)})`;
     if (this.isOutScene) return;
     this.draw();
   }
@@ -39,8 +40,8 @@ export default class Rain extends Node {
     const width = this.width;
     const angle = this.angle;
     const ctx = this.context;
-    ctx.strokeStyle = "white";
-    ctx.lineWidth = 2;
+    ctx.strokeStyle = this.color;
+    ctx.lineWidth = 4;
     ctx.beginPath();
     ctx.moveTo(start[0], start[1]);
     const end = getRotatePoint(start, width, angle);

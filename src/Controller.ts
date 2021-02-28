@@ -1,8 +1,9 @@
 import Scene from "./Scene";
 import Rain from "./Rain";
-import {getAngle} from "./utils/coordinate";
+import {getAngle} from "@mxssfd/ts-utils";
 
 export default class Controller {
+  private isStop = false;
 
   constructor() {
     this.init();
@@ -33,6 +34,7 @@ export default class Controller {
       rainList.forEach(r => r.setAngle(angle));
     });
 
+
     const int = setInterval(() => {
       if (rainList.length > 200) {
         clearInterval(int);
@@ -47,9 +49,14 @@ export default class Controller {
       rainList.forEach(rain => {
         rain.update();
       });
+      if (this.isStop) return;
       window.requestAnimationFrame(update);
     };
     window.requestAnimationFrame(update);
+    addEventListener("keydown", () => {
+      this.isStop = !this.isStop;
+      if (!this.isStop) update();
+    });
     // setInterval(update, 1000 / 60);
   }
 }
