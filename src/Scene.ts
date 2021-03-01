@@ -35,7 +35,16 @@ export default class Scene extends Container {
   }
 
   clearCanvas() {
-    // this.context.clearRect(0, 0, Scene.width, Scene.height);
-    this.context.restore();
+    this.context.clearRect(0, 0, Scene.width, Scene.height);
+  }
+
+  save() {
+    this.context.save();
+  }
+
+  update() {
+    // this.context.restore();
+    // this.context.save();
+    this.setBg();
   }
 }

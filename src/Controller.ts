@@ -44,11 +44,12 @@ export default class Controller {
     }, 60);
 
     const update = () => {
-      scene.clearCanvas();
-      scene.setBg();
+      scene.update();
+      // scene.setBg();
       rainList.forEach(rain => {
         rain.update();
       });
+      scene.save()
       if (this.isStop) return;
       window.requestAnimationFrame(update);
     };

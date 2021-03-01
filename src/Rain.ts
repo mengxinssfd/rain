@@ -1,6 +1,6 @@
 import Node from "./super/Node";
 import Scene from "./Scene";
-import {randomNumber, getBorderWidthBySin, getRotatePoint, Point} from "@mxssfd/ts-utils";
+import {randomNumber, getBorderWidthBySin, getRotatePoint, Point, randomColor} from "@mxssfd/ts-utils";
 
 const randomInt = (start: number, end: number) => ~~randomNumber(start, end);
 export default class Rain extends Node {
@@ -22,7 +22,9 @@ export default class Rain extends Node {
     this.initPoint = [randomInt(rangeStart, Scene.width + rangeEnd), -width];
     this.startPoint = this.initPoint;
     this.speed = width / 2;
-    this.color = `rgba(255,255,255,${randomNumber(0.2, 0.7)})`;
+    // this.color = `rgba(255,255,255,${randomNumber(0.2, 0.7)})`;
+    this.color = randomColor().split(".")[0];
+    console.log(this.color)
     if (this.isOutScene) return;
     this.draw();
   }
