@@ -27,11 +27,6 @@
     "experimentalDecorators": false,
     "strict": true,
     // "allowSyntheticDefaultImports": true,
-    "paths": {
-      "*": [
-        "src/*"
-      ]
-    }
   },
   "include": [
     "node_modules/@mxssfd/ts-utils/lib-es"

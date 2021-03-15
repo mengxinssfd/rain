@@ -21,10 +21,9 @@ export default class Rain extends Node {
     const rangeEnd = this.angle > 180 ? getBorderWidthBySin(Scene.height, 360 - this.angle - 90, 360 - this.angle) : 0;
     this.initPoint = [randomInt(rangeStart, Scene.width + rangeEnd), -width];
     this.startPoint = this.initPoint;
-    this.speed = width / 2;
+    this.speed = 2;
     // this.color = `rgba(255,255,255,${randomNumber(0.2, 0.7)})`;
-    this.color = randomColor().split(".")[0];
-    console.log(this.color)
+    this.color = randomColor();
     if (this.isOutScene) return;
     this.draw();
   }
