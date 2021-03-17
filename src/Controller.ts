@@ -1,6 +1,8 @@
 import Scene from "./Scene";
 import Rain from "./Rain";
 import {getAngle} from "@mxssfd/ts-utils";
+import {Pool} from "./Pool";
+import {clearInterval} from "timers";
 
 export default class Controller {
   private isStop = false;
@@ -12,9 +14,11 @@ export default class Controller {
   init() {
     let angle = 180;
     const scene = new Scene();
-    const rainList: Rain[] = [];
+    const rainList = new Pool<Rain>();
+
     const create = (): Rain => {
-      const r = new Rain(angle);
+      const r = rainList.add(() => new Rain(0));
+      r.setAngle(angle);
       scene.addChild(r);
       r.draw();
       return r;
@@ -24,9 +28,10 @@ export default class Controller {
       return ang > 220 ? 220 : (ang < 150 ? 150 : ang);
     };
 
-    rainList.push(...[...Array(10)].map(() => {
-      return create();
-    }));
+    const si = setInterval(() => {
+      if (rainList.length > 200) clearInterval(si);
+      create();
+    }, 200);
 
     addEventListener("mousemove", ev => {
       const {x, y} = ev;
@@ -40,7 +45,7 @@ export default class Controller {
         clearInterval(int);
         return;
       }
-      rainList.push(create());
+      rainList.add(() => create());
     }, 60);
 
     const update = () => {
@@ -49,7 +54,7 @@ export default class Controller {
       rainList.forEach(rain => {
         rain.update();
       });
-      scene.save()
+      scene.save();
       if (this.isStop) return;
       window.requestAnimationFrame(update);
     };

@@ -39,6 +39,6 @@
     "webpack-dev-server": "^3.9.0"
   },
   "dependencies": {
-    "@mxssfd/ts-utils": "^2.3.7"
+    "@mxssfd/ts-utils": "^2.3.9"
   }
 }
