@@ -1,11 +1,7 @@
 import Node from "./Node";
 
-export default class Container extends Node {
+export default abstract class Container extends Node {
   protected children: Node[] = [];
-
-  constructor() {
-    super();
-  }
 
   addChild(node: Node) {
     this.children.push(node);
@@ -14,7 +10,7 @@ export default class Container extends Node {
     node.onLoad();
   }
 
-  removeNode(node: Node) {
+  removeChild(node: Node) {
     const index = this.children.indexOf(node);
     if (index === -1) return;
     this.children.splice(index, 1);

@@ -1,8 +1,8 @@
 import Scene from "./Scene";
 import Rain from "./Rain";
-import {getAngle} from "@mxssfd/ts-utils";
+import {forEachByLen, getAngle, Point, randomInt} from "@mxssfd/ts-utils";
 import {Pool} from "./Pool";
-import {clearInterval} from "timers";
+import Drop from "./Drop";
 
 export default class Controller {
   private isStop = false;
@@ -15,22 +15,30 @@ export default class Controller {
     let angle = 180;
     const scene = new Scene();
     const rainList = new Pool<Rain>();
+    const dropList = new Pool<Drop>();
 
-    const create = (): Rain => {
-      const r = rainList.add(() => new Rain(0));
-      r.setAngle(angle);
+    const createRain = (): Rain => {
+      const r = rainList.add(() => new Rain());
       scene.addChild(r);
-      r.draw();
+      r.init(angle);
       return r;
     };
+
+    const createDrop = (pos: Point): Drop => {
+      const d = dropList.add(() => new Drop());
+      scene.addChild(d);
+      d.init(pos);
+      return d;
+    };
+
 
     const getLimitAngle = (ang: number) => {
       return ang > 220 ? 220 : (ang < 150 ? 150 : ang);
     };
 
-    const si = setInterval(() => {
-      if (rainList.length > 200) clearInterval(si);
-      create();
+    const si = window.setInterval(() => {
+      if (rainList.length > 200) window.clearInterval(si);
+      createRain();
     }, 200);
 
     addEventListener("mousemove", ev => {
@@ -39,13 +47,16 @@ export default class Controller {
       rainList.forEach(r => r.setAngle(angle));
     });
 
+    setInterval(() => {
+      console.log("active rain", rainList.length, "active drop", dropList.length);
+    }, 2000);
 
-    const int = setInterval(() => {
+    const int = window.setInterval(() => {
       if (rainList.length > 200) {
-        clearInterval(int);
+        window.clearInterval(int);
         return;
       }
-      rainList.add(() => create());
+      rainList.add(() => createRain());
     }, 60);
 
     const update = () => {
@@ -53,6 +64,18 @@ export default class Controller {
       // scene.setBg();
       rainList.forEach(rain => {
         rain.update();
+        if (rain.die) {
+          forEachByLen(randomInt(10), () => createDrop([rain.x, rain.y]));
+          rain.init(angle);
+        }
+      });
+      dropList.forEach(drop => {
+        drop.update();
+        if (drop.die) {
+          // drop.init([500, 500]);
+          drop.parent!.removeChild(drop);
+          dropList.remove(drop);
+        }
       });
       scene.save();
       if (this.isStop) return;

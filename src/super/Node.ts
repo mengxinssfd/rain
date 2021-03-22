@@ -1,20 +1,26 @@
-export default class Node {
-  protected _parent: Node | null = null;
+import Container from "./Container";
+export default abstract class Node {
+  protected _parent: Container | null = null;
   protected context!: CanvasRenderingContext2D;
+  x: number = 0;
+  y: number = 0;
 
-  constructor() {
+
+  get parent(): Container | null {
+    return this._parent;
   }
 
+  abstract init(...arg: any[]);
 
-  get parent(): Node | null {
-    return this._parent;
+  get die(): boolean {
+    return false;
   }
 
   public setContext(ctx: CanvasRenderingContext2D) {
     this.context = ctx;
   }
 
-  setParent(parent: Node) {
+  setParent(parent: Container) {
     this._parent = parent;
   }
 
@@ -26,6 +32,7 @@ export default class Node {
 
   }
 
-  public update(){}
+  public update() {
+  }
 
 }

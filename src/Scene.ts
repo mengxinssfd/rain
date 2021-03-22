@@ -27,6 +27,9 @@ export default class Scene extends Container {
     this.context.save();
   }
 
+  init() {
+
+  }
 
   setBg(color = "black") {
     const ctx = this.context;
