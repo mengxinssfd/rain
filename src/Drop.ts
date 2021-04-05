@@ -19,6 +19,10 @@ export default class Drop extends Node {
   top!: number;
   radius!: number;
 
+  constructor() {
+    super();
+  }
+
   init(pos: Point) {
     this.direct = randomItem([Direct.left, Direct.right]);
     this.speed = randomInt(1, 3);
@@ -32,8 +36,8 @@ export default class Drop extends Node {
   }
 
   update() {
-    this.x = this.x + (this.speed / 2 * this.direct);
-    this.y = this.y + this.gravity;
+    this.x = this.x + (this.speed / 4 * this.direct);
+    this.y = this.y + (this.gravity * this.speed);
     if (this.y < this.top) {
       this.gravity = Gravity.down;
     }

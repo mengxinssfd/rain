@@ -78,7 +78,7 @@ function main() {
     }
 
     // 画 一滴雨（一条线）
-    function createLine(e) {
+    function createLine(x) {
         // 随机生成 雨滴的长度
         var temp = 0.25 * (50 + Math.random() * 100);
         // 一个 line 对象，代表一个雨滴
@@ -88,7 +88,7 @@ function main() {
             // 判断是否删除，值为true就删除
             die: false,
             // 雨滴x坐标
-            posx: e,
+            posx: x,
             // 雨滴y坐标
             posy: -50,
             // 雨滴的长度

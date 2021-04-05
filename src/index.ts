@@ -1,4 +1,7 @@
-import Controller from "./Controller";
+// import Controller from "./Controller";
 
-new Controller();
+// new Controller();
 
+import ControllerRef from "./ControllerRef";
+
+new ControllerRef();

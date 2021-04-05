@@ -1,52 +1,43 @@
 import Node from "./super/Node";
 import Scene from "./Scene";
-import {randomInt, getBorderWidthBySin, getRotatePoint, Point, randomFloat} from "@mxssfd/ts-utils";
+import {randomInt, getRotatePoint, randomFloat} from "@mxssfd/ts-utils";
 
-export default class Rain extends Node {
+export default class RainRef extends Node {
   private width!: number;
-  private initPoint!: Point;
   private speed!: number;
   private color!: string;
-  private angle!: number;
+  private speedX = 0;
 
   constructor() {
     super();
   }
 
-  init(angle: number) {
-    this.angle = angle;
-    const width = randomInt(20, 40);
-    this.width = width;
-    const rangeStart = this.angle < 180 ? getBorderWidthBySin(Scene.height, 180 - this.angle - 90, 180 - this.angle) : 0;
-    const rangeEnd = this.angle > 180 ? getBorderWidthBySin(Scene.height, 360 - this.angle - 90, 360 - this.angle) : 0;
-    this.initPoint = [randomInt(rangeStart, Scene.width + rangeEnd), -width];
-    this.x = this.initPoint[0];
-    this.y = this.initPoint[1];
-    this.speed = width;
+  init() {
+    const x = Math.random() * 2 * Scene.width - (0.5 * Scene.width);
+    this.width = randomInt(20, 40);
+    this.x = x;
+    this.y = -50;
+    this.speed = 5.5 * (Math.random() * 6 + 3);
     this.color = `rgba(255,255,255,${randomFloat(0.2, 0.7).toFixed(2)})`;
     // this.color = randomColor();
     if (this.isOutScene) return;
     this.draw();
   }
 
-
-  public setAngle(angle: number) {
-    this.angle = angle;
-  }
-
   public draw() {
     const width = this.width;
-    const angle = this.angle;
     const ctx = this.context;
-    if (!this.context) debugger
     ctx.strokeStyle = this.color;
     ctx.lineWidth = 4;
     ctx.beginPath();
     ctx.moveTo(this.x, this.y);
-    const end = getRotatePoint([this.x, this.y], width, angle);
-    ctx.lineTo(end[0], end[1]);
+    ctx.lineTo(this.x + width * this.speedX, this.y + width);
     ctx.stroke();
     ctx.closePath();
+  }
+
+  setSpeedX(value: number) {
+    this.speedX = value;
   }
 
   get isOutScene() {

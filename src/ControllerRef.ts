@@ -1,10 +1,10 @@
 import Scene from "./Scene";
-import Rain from "./Rain";
+import RainRef from "./RainRef";
 import {forEachByLen, getAngle, Point, randomInt} from "@mxssfd/ts-utils";
 import {Pool} from "./Pool";
 import Drop from "./Drop";
 
-export default class Controller {
+export default class ControllerRef {
   private isStop = false;
 
   constructor() {
@@ -14,10 +14,10 @@ export default class Controller {
   init() {
     let angle = 180;
     const scene = new Scene();
-    const rainPool = new Pool(Rain);
+    const rainPool = new Pool(RainRef);
     const dropPool = new Pool(Drop);
 
-    rainPool.events.on("add", (item: Rain) => {
+    rainPool.events.on("add", (item: RainRef) => {
       scene.addChild(item);
       item.init(angle);
     });
