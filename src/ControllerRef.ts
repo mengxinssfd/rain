@@ -1,8 +1,8 @@
 import Scene from "./Scene";
 import RainRef from "./RainRef";
-import {forEachByLen, getAngle, Point, randomInt} from "@mxssfd/ts-utils";
+import {forEachByLen, Point, randomInt} from "@mxssfd/ts-utils";
 import {Pool} from "./Pool";
-import Drop from "./Drop";
+import DropRef from "./DropRef";
 
 export default class ControllerRef {
   private isStop = false;
@@ -12,39 +12,40 @@ export default class ControllerRef {
   }
 
   init() {
-    let angle = 180;
+    let speedX = 0;
     const scene = new Scene();
     const rainPool = new Pool(RainRef);
-    const dropPool = new Pool(Drop);
+    const dropPool = new Pool(DropRef);
 
     rainPool.events.on("add", (item: RainRef) => {
       scene.addChild(item);
-      item.init(angle);
+      item.init();
+      item.setSpeedX(speedX);
+    });
+    rainPool.events.on("remove", (item: RainRef) => {
+      scene.removeChild(item);
     });
 
-    dropPool.events.on("add", (d: Drop, pos: Point) => {
+    dropPool.events.on("add", (d: DropRef, [pos, speedX]: [Point, number]) => {
       scene.addChild(d);
-      d.init(pos);
+      d.init(pos, speedX);
+    });
+    dropPool.events.on("remove", (item: DropRef) => {
+      scene.removeChild(item);
     });
 
-    const getLimitAngle = (ang: number) => {
-      return ang > 220 ? 220 : (ang < 150 ? 150 : ang);
-    };
 
-    const si = window.setInterval(() => {
-      if (rainPool.length > 1) window.clearInterval(si);
-      rainPool.add();
-    }, 200);
-
+    const w = Scene.width;
     addEventListener("mousemove", ev => {
-      const {x, y} = ev;
-      angle = getLimitAngle(getAngle([Scene.width / 2, 0], [x, y]));
-      rainPool.forEach(r => r.setAngle(angle));
+      const {x} = ev;
+      speedX = (x - w / 2) / (w / 2);
+      rainPool.forEach(r => r.setSpeedX(speedX));
     });
 
     setInterval(() => {
       console.log("active rain", rainPool.length, "active drop", dropPool.length);
-    }, 2000);
+      if (rainPool.length < 1000) forEachByLen(randomInt(30, 100), () => rainPool.add());
+    }, 200);
 
 
     const update = () => {
@@ -54,16 +55,14 @@ export default class ControllerRef {
         rain.update();
         if (rain.die) {
           forEachByLen(randomInt(10), () => {
-            dropPool.add([rain.x, rain.y]);
+            dropPool.add([[rain.x, rain.y], rain.getSpeedX()]);
           });
-          rain.init(angle);
+          rainPool.remove(rain);
         }
       });
       dropPool.forEach(drop => {
         drop.update();
         if (drop.die) {
-          // drop.init([500, 500]);
-          drop.parent!.removeChild(drop);
           dropPool.remove(drop);
         }
       });

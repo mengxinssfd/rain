@@ -1,6 +1,6 @@
 import Node from "./super/Node";
 import Scene from "./Scene";
-import {randomInt, getRotatePoint, randomFloat} from "@mxssfd/ts-utils";
+import {randomInt, randomFloat} from "@mxssfd/ts-utils";
 
 export default class RainRef extends Node {
   private width!: number;
@@ -40,6 +40,10 @@ export default class RainRef extends Node {
     this.speedX = value;
   }
 
+  getSpeedX() {
+    return this.speedX;
+  }
+
   get isOutScene() {
     const {x, y} = this;
     const {clientWidth, clientHeight} = this.context.canvas;
@@ -52,9 +56,8 @@ export default class RainRef extends Node {
   }
 
   public update() {
-    const newPoint = getRotatePoint([this.x, this.y], this.speed, this.angle);
-    this.x = newPoint[0];
-    this.y = newPoint[1];
+    this.y += this.speed;
+    this.x += this.speedX * this.speed;
     this.draw();
   }
 }
